@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <!--Logging to file-->
+  <appender class="ch.qos.logback.core.FileAppender" name="FILE">
+    <file>testTask.log</file>
+    <encoder>
+      <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+    </encoder>
+  </appender>
+  <!--Logging to Standard output-->
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="STDOUT">
+    <encoder>
+      <pattern>%-5level - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+    <!--<appender-ref ref="STDOUT"/>-->
+  </root>
+</configuration>
