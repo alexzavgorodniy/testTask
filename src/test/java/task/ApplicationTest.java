@@ -1,15 +1,23 @@
 package task;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-import org.mockito.Mockito;
-import task.service.Computation;
 
 public class ApplicationTest extends ConfigForTests {
 
-    private Computation computationMock = Mockito.mock(Computation.class);
-
     @Test
     public void contextLoads() {
+    }
+
+    @Test
+    public void shouldRunComputeMethod() {
+        //given
+        String[] args = {"New","York","EET"};
+        //when
+        Application.main(args);
+        //then
+        assertEquals(args.length,3);
     }
 }
 

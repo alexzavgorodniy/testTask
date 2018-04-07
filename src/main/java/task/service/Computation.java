@@ -18,19 +18,19 @@ public class Computation {
     @Autowired
     private Messages messages = new Messages();
 
-    private String defineCity(String[] argsFake) {
+    String defineCity(String[] args) {
         LOG.info("Defining city");
-        String city = argsFake[0];
+        String city = args[0];
         StringBuilder builder = new StringBuilder();
-        for (int index = 1; index < argsFake.length; index++) {
-            builder = builder.append("_").append(argsFake[index]);
+        for (int index = 1; index < args.length; index++) {
+            builder = builder.append("_").append(args[index]);
         }
         return city.concat(builder.toString());
     }
 
-    private ZoneId defineTimeZoneByZoneId(String[] argsFake) {
+    ZoneId defineTimeZoneByZoneId(String[] args) {
         LOG.info("Defining zoneId by user input time zone");
-        String userZoneId = argsFake[argsFake.length - 1];
+        String userZoneId = args[args.length - 1];
         ZoneId zoneId = null;
         String[] availableIDs = TimeZone.getAvailableIDs();
         for (String availableID : availableIDs) {
@@ -41,7 +41,7 @@ public class Computation {
         return zoneId;
     }
 
-    private ZoneId defineZoneIdByCity(String city) {
+    ZoneId defineZoneIdByCity(String city) {
         LOG.info("Defining zoneId by name of entered city");
         ZoneId zoneId = null;
         String[] availableIDs = TimeZone.getAvailableIDs();
@@ -53,7 +53,7 @@ public class Computation {
         return zoneId;
     }
 
-    private String formationOfGreetingMessage(ZoneId zoneId) {
+    String formationOfGreetingMessage(ZoneId zoneId) {
         LOG.info("Forming string for greeting message which depends of hour of the day");
         StringBuilder builder = new StringBuilder();
         Integer hourInEnteredCity = LocalDateTime.now(zoneId).getHour();
@@ -71,16 +71,16 @@ public class Computation {
 
     public void compute(String[] args) {
         LOG.info("Command line parameters are passed to compute method");
-        ZoneId zoneByZoneId = defineTimeZoneByZoneId(args);
-        if (zoneByZoneId != null) {
+        ZoneId zoneByUserZoneId = defineTimeZoneByZoneId(args);
+        if (zoneByUserZoneId != null) {
             args = Arrays.copyOf(args, args.length - 1);
         }
         String city = defineCity(args);
         ZoneId zoneIdByCity = defineZoneIdByCity(city);
-        if (zoneIdByCity == null && zoneByZoneId != null) {
-            zoneIdByCity = zoneByZoneId;
+        if (zoneIdByCity == null && zoneByUserZoneId != null) {
+            zoneIdByCity = zoneByUserZoneId;
         }
-        if (zoneIdByCity == null && zoneByZoneId == null) {
+        if (zoneIdByCity == null && zoneByUserZoneId == null) {
             zoneIdByCity = ZoneId.of("GMT");
         }
         String greetingMessage = formationOfGreetingMessage(zoneIdByCity);
